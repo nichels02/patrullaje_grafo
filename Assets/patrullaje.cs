@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class patrullaje : MonoBehaviour
 {
-    ListaDeDobleSentido.listaDeDobleSentido<GameObject> lista;
+    grafo.elgrafo<GameObject> lista;
     [SerializeField] GameObject prefabs;
     [SerializeField] int[] desgaste= new int[4];
     [SerializeField] Vector3[] vectores= new Vector3[4];
@@ -23,40 +23,66 @@ public class patrullaje : MonoBehaviour
 
     private void Awake()
     {
-        lista = new ListaDeDobleSentido.listaDeDobleSentido<GameObject>();
+        lista = new grafo.elgrafo<GameObject>();
 
+        //crear nodos
         GameObject objeto_1 = Instantiate(prefabs, transform);
         objeto_1.transform.position = vectores[0];
-        lista.AddNodeStar(objeto_1, desgaste[0]);
+        lista.AddNodeStar(objeto_1);
 
 
         GameObject objeto_2 = Instantiate(prefabs, transform);
         objeto_2.transform.position = vectores[1];
-        lista.AddNodeStar(objeto_2, desgaste[1]);
+        lista.AddNodeStar(objeto_2);
 
 
         GameObject objeto_3 = Instantiate(prefabs, transform);
         objeto_3.transform.position = vectores[2];
-        lista.AddNodeStar(objeto_3, desgaste[2]);
+        lista.AddNodeStar(objeto_3);
 
 
         GameObject objeto_4 = Instantiate(prefabs, transform);
         objeto_4.transform.position = vectores[3];
-        lista.AddNodeStar(objeto_4, desgaste[3]);
+        lista.AddNodeStar(objeto_4);
+
+
+        //crear conexiones
+        int nodo = 0;
+        int conexion = 1;
+        lista.addConexion(nodo,conexion, desgaste[0]);
+
+
+        nodo = 1;
+        conexion = 2;
+        lista.addConexion(nodo,conexion, desgaste[1]);
+
+
+        nodo = 2;
+        conexion = 3;
+        lista.addConexion(nodo,conexion, desgaste[2]);
+
+
+        nodo = 3;
+        conexion = 0;
+        lista.addConexion(nodo,conexion, desgaste[3]);
     }
 
     void Start()
     {
-        segimiento = lista.Head.Valor;
+        lista.modificarEspecial(elsegimiento);
+        segimiento = lista.GetNodeEspecial();
         jugador.velocity = (segimiento.transform.position - elJugador.transform.position).normalized * velocidad;
-        elDesgaste = lista.Head.Desgaste;
+        elDesgaste = lista.Especial.GetConexionDesgastePosition(0);
         distancia = LaDistancia(elJugador.transform.position, segimiento.transform.position);
     }
 
     // Update is called once per frame
     void Update()
     {
+
         energia = energia - (elDesgaste/distancia)*Time.deltaTime;
+        segimiento = lista.GetNodePositin(elsegimiento);
+
     }
 
     float LaDistancia(Vector3 vector1, Vector2 vector2)
@@ -67,25 +93,16 @@ public class patrullaje : MonoBehaviour
         return x;
     }
 
-    void aleatorio()
+    
+    public void cambio()
     {
-        int random = Random.Range(0,1);
-        int desicion;
-        if(random == 0)
-        {
-            desicion = -1;
-            elsegimiento = elsegimiento - 1;
-            segimiento = lista.GetNodePositin(elsegimiento);
-        }
-        else
-        {
-            desicion = 1;
-            elsegimiento = elsegimiento + 1;
-            segimiento = lista.GetNodePositin(elsegimiento);
-        }
+        lista.modificarEspecialNext(1);
+        segimiento = lista.GetNodeEspecial();
+        Debug.Log(lista.Especial.Valor.transform.position.x+" "+ lista.Especial.Valor.transform.position.y + " "+ lista.Especial.Valor.transform.position.z);
+        elDesgaste = lista.Especial.GetConexionDesgastePosition(0);
+        distancia = LaDistancia(elJugador.transform.position, segimiento.transform.position);
+        jugador.velocity = Vector2.zero.normalized * velocidad;
     }
-
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision != null)
@@ -93,8 +110,9 @@ public class patrullaje : MonoBehaviour
             if (collision.tag == "punto")
             {
                 
-                
-                
+
+
+                /*
                 if (posicion == 3)
                 {
                     posicion = 0;
@@ -110,8 +128,10 @@ public class patrullaje : MonoBehaviour
                 eltiempo = objetoSegimiento.Tiempo;
                 Debug.Log(eltiempo);
                 myRGB2d.velocity = distancia / eltiempo;
+                */
             }
         }
     }
+
 
 }

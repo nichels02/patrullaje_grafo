@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ListaDeDobleSentido : MonoBehaviour
+public class grafo : MonoBehaviour
 {
-    public class listaDeDobleSentido<T>
+    public class elgrafo<T>
     {
         public class node
         {
             T valor;
             node next;
             node previus;
+            public ListaDeDobleSentido.listaDeDobleSentido<conexiones>  lista = new ListaDeDobleSentido.listaDeDobleSentido<conexiones>();
+
             public T Valor
             {
                 get { return valor; }
@@ -27,16 +29,79 @@ public class ListaDeDobleSentido : MonoBehaviour
                 set { previus = value; }
             }
 
+            
+
 
             public node(T valor)
             {
                 Valor = valor;
             }
+
+            
+
+            public conexiones PositionConexion( int position)
+            {
+                conexiones conexion = lista.Position(position).Valor;
+                return conexion;
+            }
+
+            public int GetConexionDesgastePosition( int positionConexion)
+            {
+                conexiones tmp = PositionConexion(positionConexion);
+                int x;
+                x = tmp.Desgaste;
+                return x;
+            }
+
+            public T GetConexionNodePosition(int positionConexion)
+            {
+                conexiones tmp = PositionConexion(positionConexion);
+                T x;
+                x = tmp.Valor.valor;
+                return x;
+            }
+
         }
+
+
+
+
+
+
+
+
+
+
+
+        public class conexiones
+        {
+            node valor;
+            int desgaste;
+
+            public node Valor
+            {
+                get { return valor; }
+                set { valor = value; }
+            }
+            public int Desgaste
+            {
+                get { return desgaste; }
+                set { desgaste = value; }
+            }
+
+
+            public conexiones(node valor, int desgaste)
+            {
+                Valor = valor;
+                Desgaste = desgaste;
+            }
+        }
+
 
 
         node head;
         node tail;
+        node especial;
         int cantidad;
 
         public node Head
@@ -48,6 +113,11 @@ public class ListaDeDobleSentido : MonoBehaviour
         {
             get { return tail; }
             set { tail = value; }
+        }
+        public node Especial
+        {
+            get { return especial; }
+            set { especial = value; }
         }
         public int Cantidad
         {
@@ -91,7 +161,7 @@ public class ListaDeDobleSentido : MonoBehaviour
                 tail = newnode;
                 tmp.Next = newnode;
                 newnode.Previous = tmp;
-                head.Previous= tail;
+                head.Previous = tail;
                 tail.Next = head;
                 cantidad = cantidad + 1;
             }
@@ -117,13 +187,38 @@ public class ListaDeDobleSentido : MonoBehaviour
             return x;
         }
 
+        public T GetNodeEspecial()
+        {
+            node tmp = Especial;
+            T x;
+            x = tmp.Valor;
+            return x;
+        }
+
+        public void addConexion(int nodo, int conexion, int desgaste)
+        {
+            node tmp = Position(nodo);
+            node tmpConexion = Position(conexion);
+            conexiones tmoC = new conexiones(tmpConexion, desgaste);
+            tmp.lista.AddNodeEnd(tmoC);
+
+        }
+
+        public void modificarEspecial(int posicionEspecial)
+        {
+            node node = Position(posicionEspecial);
+            Especial=node;
+        }
+
+        public void modificarEspecialNext(int posicionEspecial)
+        {
+            especial = especial.PositionConexion(posicionEspecial).Valor;
+        }
+
+
 
     }
-
-
-
-
-
+    
     // Start is called before the first frame update
     void Start()
     {

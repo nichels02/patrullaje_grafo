@@ -133,9 +133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 399094539}
   - component: {fileID: 399094538}
-  - component: {fileID: 399094540}
   - component: {fileID: 399094542}
   - component: {fileID: 399094541}
+  - component: {fileID: 399094543}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -208,19 +208,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &399094540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 399094537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47af1ceed93823d419378f7cb9321e7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  laLista: {fileID: 1576683756}
 --- !u!50 &399094541
 Rigidbody2D:
   serializedVersion: 4
@@ -268,6 +255,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &399094543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399094537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef6585ed9adea74b97c9f4d76d650e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlador: {fileID: 1576683757}
 --- !u!1 &596539296
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,7 +433,7 @@ MonoBehaviour:
   - {x: -15, y: -1, z: 0}
   jugador: {fileID: 399094541}
   elJugador: {fileID: 399094537}
-  velocidad: 0
+  velocidad: 5
 --- !u!212 &1576683758
 SpriteRenderer:
   m_ObjectHideFlags: 0
