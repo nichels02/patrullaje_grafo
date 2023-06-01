@@ -11,6 +11,7 @@ public class grafo : MonoBehaviour
             T valor;
             node next;
             node previus;
+            public int orden;
             public ListaDeDobleSentido.listaDeDobleSentido<conexiones>  lista = new ListaDeDobleSentido.listaDeDobleSentido<conexiones>();
 
             public T Valor
@@ -32,9 +33,10 @@ public class grafo : MonoBehaviour
             
 
 
-            public node(T valor)
+            public node(T valor, int elOrden)
             {
                 Valor = valor;
+                orden = elOrden;
             }
 
             
@@ -67,12 +69,6 @@ public class grafo : MonoBehaviour
 
 
 
-
-
-
-
-
-
         public class conexiones
         {
             node valor;
@@ -98,7 +94,7 @@ public class grafo : MonoBehaviour
         }
 
 
-
+        #region componentesDeLista
         node head;
         node tail;
         node especial;
@@ -124,20 +120,22 @@ public class grafo : MonoBehaviour
             get { return cantidad; }
             set { cantidad = value; }
         }
+        #endregion
 
 
-        public void AddNodeStar(T valou)
+        #region lista
+        public void AddNodeStar(T valou, int elOrden)
         {
             if (head == null)
             {
-                node newnode = new node(valou);
+                node newnode = new node(valou,elOrden);
                 head = newnode;
                 tail = newnode;
                 cantidad = cantidad + 1;
             }
             else
             {
-                node newnode = new node(valou);
+                node newnode = new node(valou,elOrden);
                 node tmp = head;
                 head = newnode;
                 newnode.Next = tmp;
@@ -148,15 +146,15 @@ public class grafo : MonoBehaviour
             }
         }
 
-        public void AddNodeEnd(T valou)
+        public void AddNodeEnd(T valou, int elOrden)
         {
             if (head == null)
             {
-                AddNodeStar(valou);
+                AddNodeStar(valou, elOrden);
             }
             else
             {
-                node newnode = new node(valou);
+                node newnode = new node(valou,elOrden);
                 node tmp = tail;
                 tail = newnode;
                 tmp.Next = newnode;
@@ -170,14 +168,14 @@ public class grafo : MonoBehaviour
         {
             int recorrido = 0;
             node tmp = head;
-            while (recorrido < position - 1)
+            while (recorrido < position)
             {
                 tmp = tmp.Next;
                 recorrido = recorrido + 1;
             }
             return tmp;
         }
-
+        #endregion
 
         public T GetNodePositin(int position)
         {
@@ -195,15 +193,33 @@ public class grafo : MonoBehaviour
             return x;
         }
 
+
+
+
+
         public void addConexion(int nodo, int conexion, int desgaste)
         {
             node tmp = Position(nodo);
             node tmpConexion = Position(conexion);
             conexiones tmoC = new conexiones(tmpConexion, desgaste);
             tmp.lista.AddNodeEnd(tmoC);
+            if (tmp!=tmpConexion)
+            {
+                /*
+                if (tmp.lista.Head.Valor.Valor == tmpConexion)
+                {
+                    Debug.Log("1");
+                }
+                else
+                {
+                    Debug.Log("2");
+                }
+                */
+            }
 
         }
 
+        #region DarValorAEspecial
         public void modificarEspecial(int posicionEspecial)
         {
             node node = Position(posicionEspecial);
@@ -212,13 +228,13 @@ public class grafo : MonoBehaviour
 
         public void modificarEspecialNext(int posicionEspecial)
         {
-            especial = especial.PositionConexion(posicionEspecial).Valor;
+            especial = especial.lista.Head.Valor.Valor;
         }
 
-
+        #endregion
 
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {
