@@ -18,7 +18,7 @@ public class patrullaje : MonoBehaviour
     int elDesgaste;
     float distancia;
     int elsegimiento=0;
-    GameObject segimiento;
+    Vector3 segimiento;
 
 
     private void Awake()
@@ -31,24 +31,28 @@ public class patrullaje : MonoBehaviour
         lista.GetNodePositin(0).name = "1";
         GameObject objeto_1=Instantiate(lista.Position(0).Valor);
         lista.Position(0).Valor.transform.position = vectores[0];
+        lista.Position(0).Elvector = vectores[0];
         //objeto_1.transform.position = vectores[0];
 
         lista.AddNodeEnd(prefabs,2);
         lista.GetNodePositin(1).name = "2";
         GameObject objeto_2 = Instantiate(lista.Position(1).Valor);
         lista.Position(1).Valor.transform.position = vectores[1];
+        lista.Position(1).Elvector = vectores[1];
         //objeto_2.transform.position = vectores[1];
 
         lista.AddNodeEnd(prefabs,3);
         lista.GetNodePositin(2).name = "3";
         GameObject objeto_3 = Instantiate(lista.Position(2).Valor);
         lista.Position(2).Valor.transform.position = vectores[2];
+        lista.Position(2).Elvector = vectores[2];
         //objeto_3.transform.position = vectores[2];
 
         lista.AddNodeEnd(prefabs,4);
         lista.GetNodePositin(3).name = "4";
         GameObject objeto_4 = Instantiate(lista.Position(3).Valor);
         lista.Position(3).Valor.transform.position = vectores[3];
+        lista.Position(3).Elvector = vectores[3];
         //objeto_4.transform.position = vectores[3];
 
 
@@ -120,10 +124,10 @@ public class patrullaje : MonoBehaviour
     void Start()
     {
         lista.modificarEspecial(elsegimiento);
-        segimiento = lista.GetNodeEspecial();
-        jugador.velocity = (segimiento.transform.position - elJugador.transform.position).normalized * velocidad;
+        segimiento = lista.GetNodeEspecial().transform.position;
+        jugador.velocity = (segimiento - elJugador.transform.position).normalized * velocidad;
         elDesgaste = lista.Especial.GetConexionDesgastePosition(0);
-        distancia = LaDistancia(elJugador.transform.position, segimiento.transform.position);
+        distancia = LaDistancia(elJugador.transform.position, segimiento);
     }
 
     // Update is called once per frame
@@ -131,7 +135,7 @@ public class patrullaje : MonoBehaviour
     {
 
         energia = energia - (elDesgaste/distancia)*Time.deltaTime;
-        segimiento = lista.GetNodePositin(elsegimiento);
+        //segimiento = lista.GetNodePositin(elsegimiento);
 
     }
 
@@ -148,12 +152,12 @@ public class patrullaje : MonoBehaviour
     {
         Debug.Log(lista.Especial.lista.Head.Valor.Valor.orden);
         lista.modificarEspecialNext(2);
-        segimiento = lista.GetNodeEspecial();
+        segimiento = lista.Especial.Elvector;
         Debug.Log(lista.Especial.lista.Head.Valor.Valor.orden);
         Debug.Log(lista.Especial.Valor.name);
         elDesgaste = lista.Especial.GetConexionDesgastePosition(0);
-        distancia = LaDistancia(elJugador.transform.position, segimiento.transform.position);
-        jugador.velocity = (segimiento.transform.position - elJugador.transform.position).normalized * velocidad;
+        distancia = LaDistancia(elJugador.transform.position, segimiento);
+        jugador.velocity = (segimiento - elJugador.transform.position).normalized * velocidad;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

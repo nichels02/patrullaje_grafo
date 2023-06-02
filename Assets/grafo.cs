@@ -12,6 +12,7 @@ public class grafo : MonoBehaviour
             node next;
             node previus;
             public int orden;
+            Vector3 elvector;
             public ListaDeDobleSentido.listaDeDobleSentido<conexiones>  lista = new ListaDeDobleSentido.listaDeDobleSentido<conexiones>();
 
             public T Valor
@@ -29,7 +30,11 @@ public class grafo : MonoBehaviour
                 get { return previus; }
                 set { previus = value; }
             }
-
+            public Vector3 Elvector
+            {
+                get { return elvector; }
+                set { elvector = value; }
+            }
             
 
 
